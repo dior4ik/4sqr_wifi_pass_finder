@@ -22,7 +22,7 @@ print
 raw_input("\033[32mPlease, press Enter to continue\033[0m")
 print
 
-raw_step = raw_input("Enter step for increasing lower left coordinates to upper right coordinates (recommended step is 200 meters): ")
+raw_step = raw_input("Enter step for increasing lower left coordinates to upper right coordinates (recommended step is 500 meters): ")
 step = float(raw_step) / 1000000
 
 out_file = raw_input("Enter name for output file: ")

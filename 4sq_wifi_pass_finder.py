@@ -20,13 +20,14 @@ print
 raw_input("\033[32mPlease, press Enter to continue\033[0m")
 print
 
+
 while nbr_req_agree != "Y":
     nbr_req = 1
     y1 = float(yx1[0])
     y2 = float(yx2[0])
 
     print
-    raw_step = raw_input("Enter step for increasing lower left coordinates to upper right coordinates (recommended step is 1000 meters): ")
+    raw_step = raw_input("Enter step for increasing lower left coordinates to upper right coordinates (I recommend to start from 1000 meters): ")
     print
     step = float(raw_step) / 100000
 
@@ -62,17 +63,18 @@ else:
     y2 = float(yx2[0])
     x2 = float(yx2[1])
 
-    print "Lower left coordinate pair from Google Maps is: " + str(y1) + ", " + str(x1)
-    print "Upper right coordinate pair from Google Maps is: " + str(y2) + ", " + str(x2)
-    print "Step is: " + str(raw_step) + " meters"
+    print
+    print "\033[1;31mLower left coordinate pair from Google Maps is: " + str(y1) + ", " + str(x1)
+    print "\033[1;31mUpper right coordinate pair from Google Maps is: " + str(y2) + ", " + str(x2)
+    print "\033[1;31mStep is: " + str(raw_step) + " meters\033[0m"
+    print
 
+    out_file = raw_input("Enter name for output file: ")
+    out_file = open(out_file, "a+")
 
-out_file = raw_input("Enter name for output file: ")
-out_file = open(out_file, "a+")
-
-print
-raw_input("\033[32mPlease, press Enter to start searching\033[0m")
-print
+    print
+    raw_input("\033[32mPlease, press Enter to start searching\033[0m")
+    print
 
 def data_request():
     connection = httplib.HTTPSConnection('api.foursquare.com')
@@ -117,4 +119,4 @@ else:
         x1 = x2
         response_parser(data_request())
 
-print "Congrats!!! Your search is completed"
+print "\033[1;31mCongrats!!! Your search is completed\033[0m"

@@ -3,6 +3,8 @@
 
 import json
 import httplib
+import hashlib
+from os import remove
 
 nbr_req_agree = "n"
 req_counter = 1
@@ -26,9 +28,9 @@ while nbr_req_agree != "Y":
     y1 = float(yx1[0])
     y2 = float(yx2[0])
 
-    print
+
     raw_step = raw_input("Enter step for increasing lower left coordinates to upper right coordinates (I recommend to start from 1000 meters): ")
-    print
+
     step = float(raw_step) / 100000
 
     while y1 < y2:
@@ -69,8 +71,8 @@ else:
     print "\033[1;31mStep is: " + str(raw_step) + " meters\033[0m"
     print
 
-    out_file = raw_input("Enter name for output file: ")
-    out_file = open(out_file, "a+")
+    out = raw_input("Enter name for output file: ")
+    tmp_file = open("tmp_file", "a+")
 
     print
     raw_input("\033[32mPlease, press Enter to start searching\033[0m")
@@ -89,7 +91,7 @@ def data_request():
 def response_parser(x):
     for i in x['response']['tips']:
         results = i['venue']['id'] + ',' + i['venue']['name'] + ',' + str(i['venue']['location']['lat']) + ',' + str(i['venue']['location']['lng']) + ',' + i['id'] + ',' + i['text'] + "\n"
-        out_file.write(results.encode('utf-8'))
+        tmp_file.write(results.encode('utf-8'))
 
 
 y1 = float(yx1[0])
@@ -119,4 +121,32 @@ else:
         x1 = x2
         response_parser(data_request())
 
-print "\033[1;31mCongrats!!! Your search is completed\033[0m"
+
+tmp_file.close()
+
+print
+print "\033[1;31mSearch is completed\033[0m"
+print
+print "\033[33mDeleting repeated lines\033[0m"
+print
+
+completed_lines_hash = set()
+
+
+out_file = open(out, "w")
+
+for line in open("tmp_file", "r"):
+
+  hashValue = hashlib.md5(line.rstrip()).hexdigest()
+
+  if hashValue not in completed_lines_hash:
+    out_file.write(line)
+    completed_lines_hash.add(hashValue)
+
+
+tmp_file.close()
+out_file.close()
+
+remove("tmp_file")
+
+print "\033[33mCongrats!!! Check '" + str(out) + "' file for results.\033[0m"
